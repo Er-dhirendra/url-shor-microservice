@@ -11,8 +11,8 @@ trait UrlShortingStrategy {
 class Base64UrlShortingStrategy extends UrlShortingStrategy {
   override def encode(originalUrl: String): String =
     Base64.getEncoder.encodeToString(originalUrl.getBytes(StandardCharsets.UTF_8))
-
 }
+
 class HashUrlShortingStrategy extends UrlShortingStrategy {
   override def encode(originalUrl: String): String = originalUrl.hashCode.toString
 }
