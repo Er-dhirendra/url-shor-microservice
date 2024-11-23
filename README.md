@@ -71,7 +71,7 @@ This is a simple URL shortening microservice built using **Scala**, **Akka HTTP*
 
 ## Requirements
 
-- **Scala 2.13.x**
+- **Scala 3.3.x**
 - **Akka HTTP** 10.x
 - **SBT (Scala Build Tool)** for building and running the project
 - **Mockito** (for unit testing)

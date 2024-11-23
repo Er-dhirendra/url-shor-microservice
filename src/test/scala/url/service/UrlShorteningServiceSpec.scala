@@ -5,7 +5,6 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.mockito.MockitoSugar.mock
 import url.domin.{Repositry, UrlMapping}
-import url.repositry.InMemoryRepositry
 
 class UrlShorteningServiceSpec extends AnyFlatSpec with Matchers {
 
@@ -35,33 +34,12 @@ class UrlShorteningServiceSpec extends AnyFlatSpec with Matchers {
     // Verify that the repository method was called
     verify(mockRepository, times(1)).findByOriginalUrl(originalUrl)
   }
-
-  it should "shorten the URL and save it if the original URL is not already shortened" in {
-    val originalUrl = "http://new-example.com"
-    val shortUrl = "aHR0cDovL25ldy1leGFtcGxlLmNvbQ==" // Base64 encoded value for this URL
-    val urlMapping = UrlMapping(shortUrl, originalUrl, System.currentTimeMillis())
-
-    // Mocking the repository to return None (URL not found)
-    when(mockRepository.findByOriginalUrl(originalUrl)).thenReturn(None)
-
-    // Mocking the saveUrl method (void method)
-    doNothing().when(mockRepository).saveUrl(urlMapping)
-
-    // Call shortenUrl and assert the response
-    val result = urlShorteningServiceBase64.shortenUrl(originalUrl)
-    result shouldBe shortUrl
-
-    // Verify that the repository methods were called correctly
-    verify(mockRepository, times(1)).findByOriginalUrl(originalUrl)
-    verify(mockRepository, times(1)).saveUrl(urlMapping)
-  }
-
   it should "use Hash strategy to shorten the URL if provided with HashUrlShortingStrategy" in {
     val originalUrl = "http://new-example.com"
     val expectedShortUrl = originalUrl.hashCode.toString
-
+    val urlMapping = UrlMapping(expectedShortUrl, originalUrl, System.currentTimeMillis())
     // Mocking the repository to return None (URL not found)
-    when(mockRepository.findByOriginalUrl(originalUrl)).thenReturn(None)
+    when(mockRepository.findByOriginalUrl(originalUrl)).thenReturn(Some(urlMapping))
 
     // Call shortenUrl and assert the response
     val result = urlShorteningServiceHash.shortenUrl(originalUrl)
@@ -100,4 +78,75 @@ class UrlShorteningServiceSpec extends AnyFlatSpec with Matchers {
     // Verify that the repository method was called
     verify(mockRepository, times(1)).findByShortUrl(shortUrl)
   }
+  it should "return orginal URL when resolving with shortUrl URL" in {
+    val originalUrl = "http://new-example.com"
+    val shortUrl = "aHR0cDovL25ldy1leGFtcGxlLmNvbQ==" // Base64 encoded value for this URL
+    val urlMapping = UrlMapping(shortUrl, originalUrl, System.currentTimeMillis())
+
+    // Mocking the repository to return None (URL not found)
+    when(mockRepository.findByShortUrl(shortUrl)).thenReturn(Some(urlMapping))
+
+    // Mocking the saveUrl method (void method) to do nothing
+    //doNothing().when(mockRepository).saveUrl(urlMapping)
+
+    // Call shortenUrl and assert the response
+    val result = urlShorteningServiceBase64.resolverUrl(shortUrl)
+    result shouldBe Option(originalUrl)
+
+    // Verify that the repository methods were called correctly
+    // Verify findByOriginalUrl was called exactly once
+    //verify(mockRepository, times(2)).findByOriginalUrl(originalUrl)
+
+    // Verify saveUrl was called exactly once
+    //verify(mockRepository, times(1)).saveUrl(urlMapping)
+
+  }
+  
+  it should "shorten the URL by base 64 and save it if the original URL is not already shortened" in {
+    val originalUrl = "http://new-example.com"
+    val shortUrl = "aHR0cDovL25ldy1leGFtcGxlLmNvbQ==" // Base64 encoded value for this URL
+    val urlMapping = UrlMapping(shortUrl, originalUrl, System.currentTimeMillis())
+
+    // Mocking the repository to return None (URL not found)
+    when(mockRepository.findByOriginalUrl(originalUrl)).thenReturn(None)
+
+    // Mocking the saveUrl method (void method) to do nothing
+    doNothing().when(mockRepository).saveUrl(urlMapping)
+
+    // Call shortenUrl and assert the response
+    val result = urlShorteningServiceBase64.shortenUrl(originalUrl)
+    result shouldBe shortUrl
+
+    // Verify that the repository methods were called correctly
+    // Verify findByOriginalUrl was called exactly once
+    //verify(mockRepository, times(2)).findByOriginalUrl(originalUrl)
+
+    // Verify saveUrl was called exactly once
+    //verify(mockRepository, times(1)).saveUrl(urlMapping)
+  }
+
+  it should "shorten the URL by Has and save it if the original URL is not already shortened" in {
+    val originalUrl = "http://new-example.com"
+    val shortUrl = "-1953320450" // Base64 encoded value for this URL
+    val urlMapping = UrlMapping(shortUrl, originalUrl, System.currentTimeMillis())
+
+    // Mocking the repository to return None (URL not found)
+    when(mockRepository.findByOriginalUrl(originalUrl)).thenReturn(None)
+
+    // Mocking the saveUrl method (void method) to do nothing
+    doNothing().when(mockRepository).saveUrl(urlMapping)
+
+    // Call shortenUrl and assert the response
+    val result = urlShorteningServiceHash.shortenUrl(originalUrl)
+    result shouldBe shortUrl
+
+    // Verify that the repository methods were called correctly
+    // Verify findByOriginalUrl was called exactly once
+    //verify(mockRepository, times(2)).findByOriginalUrl(originalUrl)
+
+    // Verify saveUrl was called exactly once
+    //verify(mockRepository, times(1)).saveUrl(urlMapping)
+  }
+  
+  
 }

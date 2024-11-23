@@ -25,6 +25,7 @@ class UrlShortiningService(repositry: Repositry, shortingUrlStrategy: UrlShortin
       case None =>
         val shortUrl = shortingUrlStrategy.encode(originalUrl)
         val urlMapping = UrlMapping(shortUrl, originalUrl, System.currentTimeMillis())
+        repositry.saveUrl(urlMapping)
         urlMapping.shortUrl
     }
   }
