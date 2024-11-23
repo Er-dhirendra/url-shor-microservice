@@ -9,6 +9,58 @@ This is a simple URL shortening microservice built using **Scala**, **Akka HTTP*
 - In-memory storage of URL mappings (using a `TrieMap` for quick lookups).
 - Exposed HTTP API endpoints for shortening and resolving URLs.
 
+## System Design Diagram
+
+                                  +----------------------+
+                                  |     Client (User)    |
+                                  |  (Web/Mobile App)    |
+                                  +----------+-----------+
+                                             |
+                                             |  HTTP Request
+                                             v
+                            +----------------------------+
+                            |   API Server (Akka HTTP)   |
+                            |  (UrlShortenController)    |
+                            +-----------+----------------+
+                                        |
+                                +-------+-------+
+                                |               |
+               +------------------------+      +------------------------+
+               |  POST /shorten          |     | GET /resolve/{shortUrl}|
+               +------------------------+      +------------------------+
+                        |                              |
+                        v                              v
+            +------------------------+        +-------------------------+
+            |   UrlShorteningService  |       |   UrlShorteningService  |
+            |  (Shorten & Resolve)    |       |  (Resolve Shortened URL)|
+            +-----------+------------+        +-------------------------+
+                        |
+                        | Check repository for URL mapping
+                        v
+         +-----------------------------------------+
+         |               Repository                |
+         |  (InMemoryRepository / DB Store)        |
+         +-----------------+-----------------------+
+                        |
+           +------------+-------------+
+           |                          |
+      +--------+---------+         +------v-------+
+      |  findByOriginal  |         |  findByShort |
+      |  URL (Original)  |         |  URL (Short) |
+      +------------------+         +--------------+
+      |
+      v
+      +-----------------------+
+      |  UrlShortingStrategy  |
+      |  (Base64/Hashing)     |
+      +-----------------------+
+      |
+      v
+      +-----------------------+
+      |    Url Mapping        |
+      |   (shortUrl, original)|
+      +-----------------------+
+
 ## Project Structure
 
 - **`url.domin`**: Contains domain classes like `UrlMapping` and the `Repositry` trait.
