@@ -4,15 +4,16 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.mockito.MockitoSugar
-import url.domin.{Repositry, UrlMapping}
-import url.service.{Base64UrlShortingStrategy, HashUrlShortingStrategy, UrlShortingStrategy, UrlShortiningService}
+import url.domin.{ Repositry, UrlMapping }
+import url.service.{ Base64UrlShortingStrategy, HashUrlShortingStrategy, UrlShortingStrategy, UrlShortiningService }
 
-class UrlShorteningServiceSpec extends AnyFlatSpec with Matchers with MockitoSugar with BeforeAndAfterEach{
+class UrlShorteningServiceSpec extends AnyFlatSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
 
   // Common test data
   val originalUrl = "http://example.com"
   val base64Url = "aHR0cDovL2V4YW1wbGUuY29t"
   val hasUrl = "-631280213"
+  val createdDate = System.currentTimeMillis()
 
   // Mock repository
   val mockRepository: Repositry = mock[Repositry]

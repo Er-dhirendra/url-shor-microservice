@@ -5,9 +5,13 @@ ThisBuild / scalaVersion := "3.3.4"
 // Root project settings
 lazy val root = (project in file("."))
   .settings(
-    name := "url-shor-microservice",
+    name := "url-short-microservice",
+    scalafmtOnCompile := true,  // Format on each compile (can be optional)
+    scalafmtConfig := file(".scalafmt.conf"),
     libraryDependencies ++= Dependencies.all
   )
+
+enablePlugins(ScalafmtPlugin)
 
 // Code coverage settings
 coverageEnabled := true

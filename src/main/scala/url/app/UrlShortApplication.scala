@@ -10,7 +10,7 @@ import url.service.{ Base64UrlShortingStrategy, UrlShortiningService }
 import scala.concurrent.ExecutionContextExecutor
 import scala.io.StdIn
 
-object Application extends App {
+object UrlShortApplication extends App {
 
   implicit val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "Application")
   implicit val executionContext: ExecutionContextExecutor = system.executionContext

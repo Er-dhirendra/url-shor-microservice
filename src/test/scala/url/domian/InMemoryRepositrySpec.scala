@@ -1,6 +1,6 @@
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import url.domin.{Repositry, UrlMapping}
+import url.domin.{ Repositry, UrlMapping }
 import url.repositry.InMemoryRepositry
 
 import scala.collection.concurrent.TrieMap
@@ -40,4 +40,3 @@ class InMemoryRepositrySpec extends AnyFlatSpec with Matchers {
     repository.findByShortUrl("nonexistent") shouldBe None
   }
 }
-
