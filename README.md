@@ -1,3 +1,7 @@
+Here is the updated `README.md` for your project, with the new SBT plugins added, as well as a general structure for your URL shortening microservice.
+
+---
+
 # URL Shortening Microservice
 
 This is a simple URL shortening microservice built using **Scala**, **Akka HTTP**, and **ScalaTest**. The service allows users to shorten long URLs and resolve shortened URLs back to their original form. It supports two strategies for URL shortening: **Base64 encoding** and **Hashing**.
@@ -186,6 +190,28 @@ Here’s an example test for the `UrlShortiningService`:
 }
 ```
 
+## SBT Plugins
+
+This project includes the following SBT plugins for additional functionality:
+
+- **SBT Scapegoat**: A static code analysis tool for Scala. It's added as a plugin for detecting potential issues in your code.
+
+  ```scala
+  addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.2.7")
+  ```
+
+- **SBT Docker**: Allows for building Docker images for Scala applications directly from SBT.
+
+  ```scala
+  addSbtPlugin("se.marcuslonnberg" % "sbt-docker" % "1.11.0")
+  ```
+
+- **SBT Assembly**: Facilitates creating fat JAR files that bundle the application and its dependencies.
+
+  ```scala
+  addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "2.3.0")
+  ```
+
 ## Class Descriptions
 
 ### `UrlShortiningService`
@@ -193,8 +219,8 @@ Here’s an example test for the `UrlShortiningService`:
 The `UrlShortiningService` class is responsible for shortening URLs and resolving shortened URLs back to the original URLs. It uses a strategy pattern to allow different URL shortening strategies (`Base64` or `Hash`).
 
 - **Methods**:
-    - `shortenUrl(originalUrl: String): String`: Shortens the original URL.
-    - `resolverUrl(short: String): Option[String]`: Resolves the shortened URL back to the original URL.
+  - `shortenUrl(originalUrl: String): String`: Shortens the original URL.
+  - `resolverUrl(short: String): Option[String]`: Resolves the shortened URL back to the original URL.
 
 ### `UrlShortingStrategy` and Its Implementations
 
@@ -235,8 +261,4 @@ If you want to contribute to this project, feel free to fork the repository, mak
 
 - **Project Overview**: Describes what the project does and the technologies used.
 - **Installation and Setup**: Includes instructions for cloning, compiling, and running the application.
-- **API Endpoints**: Describes how to interact with the API using `curl` for both shortening and resolving URLs.
-- **Testing**: Describes how to run unit tests and includes an example test case.
-- **Class Descriptions**: Provides brief descriptions of the key classes in the project.
-
-This `README.md` should provide a clear guide for users to understand and run your URL shortening service, interact with it via HTTP requests, and run unit tests.
+- **API Endpoints**: Describes how to interact with the API using `curl` for both shortening and resolving
